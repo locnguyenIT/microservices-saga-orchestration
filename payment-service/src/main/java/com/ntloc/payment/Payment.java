@@ -19,7 +19,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long orderId;
+    @Enumerated(value = EnumType.STRING)
     private PaymentState state;
+    @Enumerated(value = EnumType.STRING)
     private RejectionReason rejectionReason;
     private LocalDateTime createAt;
 
