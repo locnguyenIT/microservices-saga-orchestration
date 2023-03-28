@@ -26,20 +26,20 @@ public class Order {
     @Enumerated(value = EnumType.STRING)
     private OrderState state;
     @Enumerated(value = EnumType.STRING)
-    private RejectionReason rejectionReason;
+    private FailedReason failedReason;
 
     public Order(OrderDetails orderDetails) {
         this.orderDetails = orderDetails;
         this.state = CREATED;
     }
 
-    public void approve() {
-        this.state = APPROVED;
+    public void completed() {
+        this.state = SUCCEEDED;
     }
 
-    public void reject(RejectionReason rejectionReason) {
-        this.state = REJECTED;
-        this.rejectionReason = rejectionReason;
+    public void failed(FailedReason failedReason) {
+        this.state = FAILED;
+        this.failedReason = failedReason;
     }
 
 }

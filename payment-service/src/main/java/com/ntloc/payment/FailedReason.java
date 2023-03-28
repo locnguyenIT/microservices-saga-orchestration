@@ -1,6 +1,6 @@
 package com.ntloc.payment;
 
-public enum RejectionReason {
+public enum FailedReason {
 
     BANK_ERROR,
 }

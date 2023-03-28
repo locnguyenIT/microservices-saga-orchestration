@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping(path = "api/v1/orders")
+@RequestMapping(path = "/api/v1/orders")
 public class OrderController {
 
     private final OrderService orderService;
@@ -21,7 +21,7 @@ public class OrderController {
 
     @GetMapping(path = "/{id}")
     public OrderDTO getOrder(@PathVariable("id") Long id) {
-        log.info("OrdersId {}", id);
+        log.info("Get OrderId: {}", id);
         return orderService.getOrder(id);
     }
 

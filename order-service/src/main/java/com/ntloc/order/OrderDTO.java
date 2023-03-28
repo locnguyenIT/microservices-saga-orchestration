@@ -8,6 +8,6 @@ public record OrderDTO(Long id,
                        Integer quantity,
                        LocalDateTime createAt,
                        OrderState state,
-                       RejectionReason rejectionReason) {
+                       FailedReason failedReason) {
 
 }

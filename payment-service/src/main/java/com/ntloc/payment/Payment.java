@@ -5,6 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static com.ntloc.payment.PaymentState.FAILED;
+import static com.ntloc.payment.PaymentState.SUCCEEDED;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,7 +25,22 @@ public class Payment {
     @Enumerated(value = EnumType.STRING)
     private PaymentState state;
     @Enumerated(value = EnumType.STRING)
-    private RejectionReason rejectionReason;
+    private FailedReason failedReason;
     private LocalDateTime createAt;
+
+    public Payment(Long orderId) {
+        this.orderId = orderId;
+        this.createAt = LocalDateTime.now();
+        this.state = SUCCEEDED;
+    }
+
+    public void completed() {
+        this.state = SUCCEEDED;
+    }
+
+    public void failed(FailedReason failedReason) {
+        this.state = FAILED;
+        this.failedReason = failedReason;
+    }
 
 }

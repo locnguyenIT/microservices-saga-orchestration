@@ -1,6 +1,6 @@
 #Server
 server:
-  port: 8040
+  port: 8050
 #Management
 management:
   endpoints:
@@ -13,9 +13,9 @@ management:
 #Spring
 spring:
   application:
-    name: product-service
+    name: delivery-service
   datasource:
-    url: jdbc:mysql://localhost:3306/product
+    url: jdbc:mysql://localhost:3306/delivery
     username: root
     password: password
   jpa:

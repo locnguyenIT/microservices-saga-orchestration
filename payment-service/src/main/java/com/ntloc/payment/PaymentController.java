@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping(path = "api/v1/payments")
+@RequestMapping(path = "/api/v1/payments")
 public class PaymentController {
 
     private final PaymentService paymentService;

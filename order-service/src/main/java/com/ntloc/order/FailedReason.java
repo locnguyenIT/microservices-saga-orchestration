@@ -1,6 +1,6 @@
 package com.ntloc.order;
 
-public enum RejectionReason {
+public enum FailedReason {
 
     INSUFFICIENT_CREDIT,
     INSUFFICIENT_QUANTITY,
