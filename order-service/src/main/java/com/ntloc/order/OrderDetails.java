@@ -19,5 +19,7 @@ public class OrderDetails {
     private Long productId;
     private Integer quantity;
     private BigDecimal totalMoney;
-    private LocalDateTime createAt;
+    @Builder.Default
+    private LocalDateTime createAt = LocalDateTime.now();
+
 }

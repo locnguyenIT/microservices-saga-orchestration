@@ -3,6 +3,7 @@ package com.ntloc.order;
 import com.ntloc.order.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
 
+    private final CommandGateway commandGateway;
+
     public List<OrderDTO> getAllOrders() {
         List<Order> listOrder = orderRepository.findAll();
         return orderMapper.toListOrderDTO(listOrder);
@@ -34,18 +37,22 @@ public class OrderService {
     @Transactional
     public OrderDTO order(OrderRequest orderRequest) {
         Order order = orderRepository.save(new Order(OrderDetails.builder()
-                .customerId(1L)
-                .productId(2L)
-                .totalMoney(BigDecimal.valueOf(100_000))
-                .createAt(LocalDateTime.now())
+                .customerId(orderRequest.customerId())
+                .productId(orderRequest.productId())
+                .quantity(orderRequest.quantity())
+                .totalMoney(orderRequest.totalMoney())
                 .build())
         );
+
+        OrderCommand orderCommand = new OrderCommand(order.getId(),order.getOrderDetails(),order.getState());
 //        if (orderRequest.getQuantity() < 5) {
 //            order.approve();
 //            //TODO: Update quantity of product
 //        } else {
 //            order.reject(INSUFFICIENT_QUANTITY);
 //        }
+        String o = commandGateway.sendAndWait(orderCommand);
+        log.info("command id: " +o);
         return orderMapper.toOrderDTO(order);
 
     }

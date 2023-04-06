@@ -34,7 +34,7 @@ public class Order {
     }
 
     public void completed() {
-        this.state = SUCCEEDED;
+        this.state = COMPLETED;
     }
 
     public void failed(FailedReason failedReason) {

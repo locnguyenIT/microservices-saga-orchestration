@@ -21,7 +21,6 @@ public class OrderDataSource {
                             .productId(2L)
                             .quantity(5)
                             .totalMoney(BigDecimal.valueOf(100_000))
-                            .createAt(LocalDateTime.now())
                             .build())
                     .state(CREATED)
                     .build();

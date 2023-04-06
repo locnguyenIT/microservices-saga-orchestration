@@ -14,7 +14,9 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <axon-version>4.7.3</axon-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <springdoc.openapi.version>1.6.15</springdoc.openapi.version>
     </properties>
 
     <dependencies>
@@ -30,6 +32,16 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.axonframework</groupId>
+            <artifactId>axon-spring-boot-starter</artifactId>
+            <version>${axon-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc.openapi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>

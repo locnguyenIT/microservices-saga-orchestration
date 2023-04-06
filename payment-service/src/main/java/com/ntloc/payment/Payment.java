@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import static com.ntloc.payment.PaymentState.FAILED;
-import static com.ntloc.payment.PaymentState.SUCCEEDED;
+import static com.ntloc.payment.PaymentState.COMPLETED;
 
 @Getter
 @Setter
@@ -31,11 +31,11 @@ public class Payment {
     public Payment(Long orderId) {
         this.orderId = orderId;
         this.createAt = LocalDateTime.now();
-        this.state = SUCCEEDED;
+        this.state = COMPLETED;
     }
 
     public void completed() {
-        this.state = SUCCEEDED;
+        this.state = COMPLETED;
     }
 
     public void failed(FailedReason failedReason) {

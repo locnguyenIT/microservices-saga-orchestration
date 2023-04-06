@@ -13,7 +13,7 @@ management:
 #Spring
 spring:
   application:
-    name: payment
+    name: payment-service
   datasource:
     url: jdbc:mysql://localhost:3306/payment
     username: root
