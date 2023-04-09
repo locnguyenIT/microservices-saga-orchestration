@@ -26,7 +26,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public OrderDTO order(@RequestBody OrderRequest orderRequest) {
+    public String order(@RequestBody OrderRequest orderRequest) {
         log.info("Customer order: {}", orderRequest);
         return orderService.order(orderRequest);
     }

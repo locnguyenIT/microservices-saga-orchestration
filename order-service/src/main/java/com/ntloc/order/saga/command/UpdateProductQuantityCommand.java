@@ -1,4 +1,4 @@
-package com.ntloc.order;
+package com.ntloc.order.saga.command;
 
 import lombok.*;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
@@ -9,9 +9,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @NoArgsConstructor
 @ToString
 @Builder
-public class OrderCommand {
+public class UpdateProductQuantityCommand {
     @TargetAggregateIdentifier
-    private Long id;
-    private OrderDetails orderDetails;
-    private OrderState state;
+    private String productId;
 }

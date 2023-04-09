@@ -21,15 +21,13 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long orderId;
+    private String address;
     @Enumerated(value = EnumType.STRING)
     private DeliveryState state;
-    private LocalDateTime start;
-    private LocalDateTime end;
 
-    public Delivery(Long orderId, LocalDateTime start) {
+    public Delivery(Long orderId, String address) {
         this.orderId = orderId;
-        this.start = start;
-        this.end = LocalDateTime.now();
+        this.address = address;
         this.state = COMPLETED;
     }
 }

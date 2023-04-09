@@ -10,13 +10,13 @@
     </parent>
 
     <artifactId>order-service</artifactId>
-
+    <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <axon-version>4.7.3</axon-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <springdoc.openapi.version>1.6.15</springdoc.openapi.version>
+        <springdoc.openapi.version>1.7.0</springdoc.openapi.version>
     </properties>
 
     <dependencies>

@@ -4,4 +4,4 @@
  |  __/ (_| | |_| | | | | | |  __/ | | | |_    ___) |  __/ |   \ V /| | (_|  __/  / / / /
  |_|   \__,_|\__, |_| |_| |_|\___|_| |_|\__|  |____/ \___|_|    \_/ |_|\___\___| /_/_/_/
              |___/
- ${AnsiColor.GREEN}Powered by :: Spring Boot ${spring-boot.formatted-version} :: © 2023. All right reserved. ${AnsiColor.DEFAULT}
+ ${AnsiColor.GREEN}Powered by :: Spring Boot ${spring-boot.formatted-version} :: © Shop-X 2023. All right reserved. ${AnsiColor.DEFAULT}

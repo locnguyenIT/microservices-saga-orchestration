@@ -13,8 +13,7 @@ public class DeliveryDataSource {
     @Bean
     CommandLineRunner commandLineRunner(DeliveryRepository customerRepository) {
         return args -> {
-            Delivery delivery = new Delivery(1L, LocalDateTime.of(2023, 05, 14, 05, 34, 12));
-
+            Delivery delivery = new Delivery(1L, "Ho Chi Minh city");
 
             customerRepository.saveAll(List.of(delivery));
         };
