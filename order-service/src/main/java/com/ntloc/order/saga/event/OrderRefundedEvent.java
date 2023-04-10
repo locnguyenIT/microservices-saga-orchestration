@@ -8,8 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Builder
-public class PaymentValidatedEvent {
+public class OrderRefundedEvent {
 
-    private String paymentId;
     private String orderId;
 }

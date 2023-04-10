@@ -9,11 +9,7 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @NoArgsConstructor
 @ToString
 @Builder
-public class ValidatePaymentCommand {
-
+public class ProductQuantityUpdateCommand {
     @TargetAggregateIdentifier
-    private String paymentId;
-    private String orderId;
-
-    //TODO: add "card account" of user to validate
+    private String productId;
 }

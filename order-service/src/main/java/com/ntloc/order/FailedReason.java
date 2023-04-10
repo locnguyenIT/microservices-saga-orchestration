@@ -1,7 +1,5 @@
 package com.ntloc.order;
 
-import lombok.*;
-
 public enum FailedReason {
 
     INSUFFICIENT_CREDIT,

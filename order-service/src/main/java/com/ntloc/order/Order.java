@@ -17,8 +17,7 @@ import static com.ntloc.order.OrderState.*;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Enumerated
     private OrderDetails orderDetails;
@@ -28,9 +27,18 @@ public class Order {
     @Enumerated(value = EnumType.STRING)
     private FailedReason failedReason;
 
-    public Order(OrderDetails orderDetails) {
+    public Order(String orderId, OrderDetails orderDetails) {
+        this.id = orderId;
         this.orderDetails = orderDetails;
         this.state = CREATED;
+    }
+
+    public void cancel() {
+        this.state = CANCELLED;
+    }
+
+    public void refund() {
+        this.state = REFUNDED;
     }
 
     public void completed() {

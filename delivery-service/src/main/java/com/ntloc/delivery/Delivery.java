@@ -3,7 +3,6 @@ package com.ntloc.delivery;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 import static com.ntloc.delivery.DeliveryState.COMPLETED;
 

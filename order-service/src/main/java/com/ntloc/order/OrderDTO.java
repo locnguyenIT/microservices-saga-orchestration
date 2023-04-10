@@ -1,8 +1,6 @@
 package com.ntloc.order;
 
-import java.time.LocalDateTime;
-
-public record OrderDTO(Long id,
+public record OrderDTO(String id,
                        OrderDetails orderDetails,
                        OrderState state,
                        FailedReason failedReason) {

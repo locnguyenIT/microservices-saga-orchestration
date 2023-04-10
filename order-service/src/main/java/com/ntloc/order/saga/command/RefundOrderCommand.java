@@ -9,7 +9,8 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @NoArgsConstructor
 @ToString
 @Builder
-public class UpdateProductQuantityCommand {
+public class RefundOrderCommand {
+
     @TargetAggregateIdentifier
-    private String productId;
+    private String orderId;
 }
