@@ -1,0 +1,20 @@
+#Server
+server:
+  port: 8070
+#Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+#Spring
+spring:
+  application:
+    name: order-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: orderview
