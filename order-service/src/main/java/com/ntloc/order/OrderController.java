@@ -27,9 +27,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public CompletableFuture<String> createOrder(@RequestBody OrderRequest orderRequest) {
-        log.info("Customer order: {}", orderRequest);
-        return orderService.createOrder(orderRequest);
+    public CompletableFuture<String> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
+        log.info("Customer order: {}", createOrderRequest);
+        return orderService.createOrder(createOrderRequest);
     }
 
     @PutMapping(path = "/{id}/cancel")

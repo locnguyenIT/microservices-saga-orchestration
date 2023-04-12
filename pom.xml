@@ -19,7 +19,8 @@
     <module>product-service</module>
     <module>delivery-service</module>
     <module>notification-service</module>
-    <module>order-view-service</module>
+    <module>order-history-service</module>
+    <module>core-api-resources</module>
   </modules>
 
   <properties>

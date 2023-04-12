@@ -1,4 +1,4 @@
-package com.ntloc.ordeview.query;
+package com.ntloc.order;
 
 import lombok.*;
 
@@ -8,6 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Builder
-public class FindOrderQuery {
+public class OrderCancelledEvent {
+
     private String orderId;
+
 }

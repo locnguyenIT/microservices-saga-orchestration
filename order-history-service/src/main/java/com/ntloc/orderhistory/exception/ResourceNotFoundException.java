@@ -1,4 +1,4 @@
-package com.ntloc.ordeview.exception;
+package com.ntloc.orderhistory.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

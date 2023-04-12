@@ -1,4 +1,4 @@
-package com.ntloc.ordeview;
+package com.ntloc.orderhistory;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(path = "/api/v1/order-view")
-public class OrderViewController {
+@RequestMapping(path = "/api/v1/customers")
+public class CustomerOrderHistoryController {
 
-    private final OrderViewService orderViewService;
+    private final OrderHistoryViewService orderHistoryViewService;
 
     @GetMapping(path = "/{id}")
-    public Order getOrderByUserId(@PathVariable("id") String id) {
-        return orderViewService.getOrderByUserId(id);
+    public OrderView getOrderByUserId(@PathVariable("id") String id) {
+        return orderHistoryViewService.getOrderByUserId(id);
     }
 
 }

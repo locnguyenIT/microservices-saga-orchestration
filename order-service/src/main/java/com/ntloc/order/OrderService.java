@@ -35,13 +35,13 @@ public class OrderService {
         return orderMapper.toOrderDTO(order);
     }
 
-    public CompletableFuture<String> createOrder(OrderRequest orderRequest) {
+    public CompletableFuture<String> createOrder(CreateOrderRequest createOrderRequest) {
         CreateOrderCommand createOrderCommand = new CreateOrderCommand(UUID.randomUUID().toString(),
                 OrderDetails.builder()
-                        .customerId(orderRequest.customerId())
-                        .productId(orderRequest.productId())
-                        .quantity(orderRequest.quantity())
-                        .totalMoney(orderRequest.totalMoney()).build()
+                        .customerId(createOrderRequest.customerId())
+                        .productId(createOrderRequest.productId())
+                        .quantity(createOrderRequest.quantity())
+                        .totalMoney(createOrderRequest.totalMoney()).build()
         );
         return commandGateway.send(createOrderCommand);
 
