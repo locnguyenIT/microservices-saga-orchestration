@@ -1,6 +1,6 @@
 package com.ntloc.orderhistory;
 
-import com.ntloc.order.OrderCreatedEvent;
+import com.ntloc.coreapi.order.event.OrderCreatedEvent;
 import com.ntloc.orderhistory.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class OrderHistoryViewService {
 
     public void createOrder(OrderCreatedEvent event) {
         orderViewRepository.save(new OrderView(UUID.randomUUID().toString(),
-                event.getOrderId(), event.getOrderDetails(),
+                event.orderId(), event.orderDetails(),
                 "customerId",
                 "customerName"));
     }

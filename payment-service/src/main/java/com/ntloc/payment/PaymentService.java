@@ -20,7 +20,7 @@ public class PaymentService {
         return paymentMapper.toListPaymentDTO(allOrders);
     }
 
-    public PaymentDTO getPayment(Long id) {
+    public PaymentDTO getPayment(String id) {
         Payment payment = paymentRepository.findById(id).orElseThrow(() ->
                 new ResolutionException(PAYMENT_WAS_NOT_FOUND));
         return paymentMapper.toPaymentDTO(payment);

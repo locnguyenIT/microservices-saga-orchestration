@@ -1,6 +1,6 @@
 package com.ntloc.orderhistory;
 
-import com.ntloc.order.OrderDetails;
+import com.ntloc.coreapi.order.model.OrderDetails;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

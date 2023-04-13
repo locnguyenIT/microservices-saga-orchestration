@@ -1,4 +1,4 @@
-package com.ntloc.order;
+package com.ntloc.coreapi.order.model;
 
 import lombok.*;
 
@@ -6,13 +6,13 @@ import javax.persistence.Embeddable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
 @ToString
+@Embeddable
 public class OrderDetails {
 
     private Long customerId;

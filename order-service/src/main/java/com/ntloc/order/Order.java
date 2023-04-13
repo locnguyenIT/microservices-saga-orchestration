@@ -1,5 +1,6 @@
 package com.ntloc.order;
 
+import com.ntloc.coreapi.order.model.OrderDetails;
 import lombok.*;
 
 import javax.persistence.*;

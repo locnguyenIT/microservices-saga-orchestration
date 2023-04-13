@@ -1,8 +1,8 @@
 package com.ntloc.orderhistory;
 
-import com.ntloc.order.OrderCancelledEvent;
-import com.ntloc.order.OrderCreatedEvent;
-import com.ntloc.order.OrderRefundedEvent;
+import com.ntloc.coreapi.order.event.OrderCancelledEvent;
+import com.ntloc.coreapi.order.event.OrderCreatedEvent;
+import com.ntloc.coreapi.order.event.OrderRefundedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
@@ -27,14 +27,14 @@ public class OrderHistoryViewProjection {
     @EventHandler
     public void on(OrderCancelledEvent event) {
         log.info("OrderHistory pull OrderCancelledEvent: {}", event);
-        orderHistoryViewService.cancelOrder(event.getOrderId());
+        orderHistoryViewService.cancelOrder(event.orderId());
 
     }
 
     @EventHandler
     public void on(OrderRefundedEvent event) {
         log.info("OrderHistory pull OrderRefundedEvent: {}", event);
-        orderHistoryViewService.refundOrder(event.getOrderId());
+        orderHistoryViewService.refundOrder(event.orderId());
     }
 
 

@@ -1,11 +1,11 @@
 package com.ntloc.order.saga.event.handler;
 
+import com.ntloc.coreapi.order.event.OrderCancelledEvent;
+import com.ntloc.coreapi.order.event.OrderCreatedEvent;
+import com.ntloc.coreapi.order.event.OrderRefundedEvent;
 import com.ntloc.order.Order;
 import com.ntloc.order.OrderRepository;
 import com.ntloc.order.exception.ResourceNotFoundException;
-import com.ntloc.order.saga.event.OrderCancelledEvent;
-import com.ntloc.order.saga.event.OrderCreatedEvent;
-import com.ntloc.order.saga.event.OrderRefundedEvent;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +22,13 @@ public class OrderEventHandler {
 
     @EventHandler
     public void on(OrderCreatedEvent orderCreatedEvent) {
-        Order order = new Order(orderCreatedEvent.getOrderId(), orderCreatedEvent.getOrderDetails());
+        Order order = new Order(orderCreatedEvent.orderId(), orderCreatedEvent.orderDetails());
         orderRepository.save(order);
     }
 
     @EventHandler
     public void on(OrderCancelledEvent orderCancelledEvent) {
-        Order order = orderRepository.findById(orderCancelledEvent.getOrderId()).orElseThrow(() ->
+        Order order = orderRepository.findById(orderCancelledEvent.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.cancel();
         orderRepository.save(order);
@@ -36,7 +36,7 @@ public class OrderEventHandler {
 
     @EventHandler
     public void on(OrderRefundedEvent orderRefundedEvent) {
-        Order order = orderRepository.findById(orderRefundedEvent.getOrderId()).orElseThrow(() ->
+        Order order = orderRepository.findById(orderRefundedEvent.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.refund();
         orderRepository.save(order);

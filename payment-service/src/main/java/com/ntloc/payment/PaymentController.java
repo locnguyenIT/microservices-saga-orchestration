@@ -23,7 +23,7 @@ public class PaymentController {
     }
 
     @GetMapping(path = "/{id}")
-    public PaymentDTO getPayment(@PathVariable("id") Long id) {
+    public PaymentDTO getPayment(@PathVariable("id") String id) {
         log.info("PaymentId {}", id);
         return paymentService.getPayment(id);
     }

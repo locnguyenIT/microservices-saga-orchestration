@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import static com.ntloc.delivery.DeliveryState.COMPLETED;
+import static com.ntloc.delivery.DeliveryState.DELIVERED;
 
 @Getter
 @Setter
@@ -27,6 +27,6 @@ public class Delivery {
     public Delivery(Long orderId, String address) {
         this.orderId = orderId;
         this.address = address;
-        this.state = COMPLETED;
+        this.state = DELIVERED;
     }
 }

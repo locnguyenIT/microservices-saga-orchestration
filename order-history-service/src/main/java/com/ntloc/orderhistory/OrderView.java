@@ -1,7 +1,7 @@
 package com.ntloc.orderhistory;
 
-import com.ntloc.order.FailedReason;
-import com.ntloc.order.OrderDetails;
+import com.ntloc.coreapi.order.model.FailedReason;
+import com.ntloc.coreapi.order.model.OrderDetails;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
