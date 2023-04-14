@@ -7,6 +7,7 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 import org.axonframework.spring.stereotype.Aggregate;
@@ -18,7 +19,7 @@ import static com.ntloc.delivery.DeliveryState.DELIVERED;
 @Aggregate
 public class DeliveryAggregate {
 
-    @TargetAggregateIdentifier
+    @AggregateIdentifier
     private String deliveryId;
     private DeliveryState state;
 

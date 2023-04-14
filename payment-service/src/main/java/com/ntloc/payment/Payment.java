@@ -30,7 +30,7 @@ public class Payment {
         this.id = id;
         this.orderId = orderId;
         this.createAt = LocalDateTime.now();
-        this.state = PROCESSING;
+        this.state = SUCCEEDED;
     }
 
     public void succeeded() {

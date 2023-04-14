@@ -13,6 +13,7 @@ import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
@@ -20,10 +21,11 @@ import java.util.UUID;
 @Saga
 public class CreateOrderSaga {
 
-    private final CommandGateway commandGateway;
+    @Autowired
+    private transient CommandGateway commandGateway;
 
-    public CreateOrderSaga(CommandGateway commandGateway) {
-        this.commandGateway = commandGateway;
+
+    public CreateOrderSaga() {
     }
 
     @StartSaga

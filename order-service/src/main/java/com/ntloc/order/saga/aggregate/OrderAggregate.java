@@ -27,7 +27,6 @@ public class OrderAggregate {
 
     @AggregateIdentifier
     private String orderId;
-    private OrderDetails orderDetails;
     private OrderState state;
 
     public OrderAggregate() {
@@ -48,7 +47,6 @@ public class OrderAggregate {
     public void on(OrderCreatedEvent orderCreatedEvent) {
         log.info("Pull OrderCreatedEvent of orderId: {} " + orderCreatedEvent.orderId());
         this.orderId = orderCreatedEvent.orderId();
-        this.orderDetails = orderCreatedEvent.orderDetails();
         this.state = CREATED;
         log.info("Updated OrderAggregate after OrderCreatedEvent: " + this);
     }
@@ -64,7 +62,7 @@ public class OrderAggregate {
 
     @EventSourcingHandler
     public void on(OrderCancelledEvent event) {
-        log.info("Pull OrderCancelledEvent of orderId: {}: " + event.orderId());
+        log.info("Pull OrderCancelledEvent of orderId: {} " + event.orderId());
         this.orderId = event.orderId();
         this.state = CANCELLED;
         log.info("Updated OrderAggregate after OrderCancelledEvent: " + this);

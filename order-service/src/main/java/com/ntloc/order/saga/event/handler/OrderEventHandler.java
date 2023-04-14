@@ -1,6 +1,7 @@
 package com.ntloc.order.saga.event.handler;
 
 import com.ntloc.coreapi.order.event.OrderCancelledEvent;
+import com.ntloc.coreapi.order.event.OrderCompletedEvent;
 import com.ntloc.coreapi.order.event.OrderCreatedEvent;
 import com.ntloc.coreapi.order.event.OrderRefundedEvent;
 import com.ntloc.order.Order;
@@ -39,6 +40,14 @@ public class OrderEventHandler {
         Order order = orderRepository.findById(orderRefundedEvent.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.refund();
+        orderRepository.save(order);
+    }
+
+    @EventHandler
+    public void on(OrderCompletedEvent event) {
+        Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
+                new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
+        order.completed();
         orderRepository.save(order);
     }
 
