@@ -24,10 +24,6 @@ public class CreateOrderSaga {
     @Autowired
     private transient CommandGateway commandGateway;
 
-
-    public CreateOrderSaga() {
-    }
-
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void on(OrderCreatedEvent event) {

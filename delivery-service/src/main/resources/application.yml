@@ -25,3 +25,7 @@ spring:
       hibernate:
         format_sql: true
     show_sql: true
+#Axon
+axon:
+  serializer:
+    general: jackson
