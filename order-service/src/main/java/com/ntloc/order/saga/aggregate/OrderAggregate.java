@@ -8,8 +8,7 @@ import com.ntloc.coreapi.order.event.OrderCancelledEvent;
 import com.ntloc.coreapi.order.event.OrderCompletedEvent;
 import com.ntloc.coreapi.order.event.OrderCreatedEvent;
 import com.ntloc.coreapi.order.event.OrderRefundedEvent;
-import com.ntloc.coreapi.order.model.OrderDetails;
-import com.ntloc.order.OrderState;
+import com.ntloc.coreapi.order.model.OrderState;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
@@ -18,7 +17,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import static com.ntloc.order.OrderState.*;
+import static com.ntloc.coreapi.order.model.OrderState.*;
 
 @Aggregate
 @ToString
@@ -43,29 +42,12 @@ public class OrderAggregate {
         log.info("Pushed OrderCreatedEvent of orderId : {}", orderCreatedEvent.orderId());
     }
 
-    @EventSourcingHandler
-    public void on(OrderCreatedEvent orderCreatedEvent) {
-        log.info("Pull OrderCreatedEvent of orderId: {} " + orderCreatedEvent.orderId());
-        this.orderId = orderCreatedEvent.orderId();
-        this.state = CREATED;
-        log.info("Updated OrderAggregate after OrderCreatedEvent: " + this);
-    }
-
-
     @CommandHandler
     public void handle(CancelOrderCommand command) {
         log.info("Receive CancelOrderCommand of orderId : {}", command.orderId());
         OrderCancelledEvent orderCancelledEvent = new OrderCancelledEvent(command.orderId());
         AggregateLifecycle.apply(orderCancelledEvent);
         log.info("Pushed CancelOrderEvent of orderId : {}", orderCancelledEvent.orderId());
-    }
-
-    @EventSourcingHandler
-    public void on(OrderCancelledEvent event) {
-        log.info("Pull OrderCancelledEvent of orderId: {} " + event.orderId());
-        this.orderId = event.orderId();
-        this.state = CANCELLED;
-        log.info("Updated OrderAggregate after OrderCancelledEvent: " + this);
     }
 
     @CommandHandler
@@ -77,14 +59,6 @@ public class OrderAggregate {
         log.info("Pushed OrderReturnedEvent of orderId : {}", orderRefundedEvent.orderId());
     }
 
-    @EventSourcingHandler
-    public void on(OrderRefundedEvent event) {
-        log.info("Pull OrderReturnedEvent of orderId: {}: " + event.orderId());
-        this.orderId = event.orderId();
-        this.state = REFUNDED;
-        log.info("Updated OrderAggregate after OrderReturnedEvent: " + this);
-    }
-
     @CommandHandler
     public void handle(CompleteOrderCommand command) {
         log.info("Receive CompleteOrderCommand for orderId : {}", command.orderId());
@@ -94,12 +68,36 @@ public class OrderAggregate {
     }
 
     @EventSourcingHandler
+    public void on(OrderCreatedEvent orderCreatedEvent) {
+        log.info("Pull OrderCreatedEvent of orderId: {} " + orderCreatedEvent.orderId());
+        this.orderId = orderCreatedEvent.orderId();
+        this.state = CREATED;
+        log.info("Updated OrderAggregate after OrderCreatedEvent: " + this);
+    }
+
+
+    @EventSourcingHandler
+    public void on(OrderCancelledEvent event) {
+        log.info("Pull OrderCancelledEvent of orderId: {} " + event.orderId());
+        this.orderId = event.orderId();
+        this.state = CANCELLED;
+        log.info("Updated OrderAggregate after OrderCancelledEvent: " + this);
+    }
+
+    @EventSourcingHandler
+    public void on(OrderRefundedEvent event) {
+        log.info("Pull OrderReturnedEvent of orderId: {}: " + event.orderId());
+        this.orderId = event.orderId();
+        this.state = REFUNDED;
+        log.info("Updated OrderAggregate after OrderReturnedEvent: " + this);
+    }
+
+    @EventSourcingHandler
     public void on(OrderCompletedEvent event) {
         log.info("Pull CompleteOrderEvent of orderId: {}: " + event.orderId());
         this.orderId = event.orderId();
         this.state = COMPLETED;
         log.info("Updated OrderAggregate after CompleteOrderEvent: " + this);
     }
-
 
 }

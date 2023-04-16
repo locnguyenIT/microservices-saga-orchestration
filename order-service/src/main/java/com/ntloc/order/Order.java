@@ -1,11 +1,14 @@
 package com.ntloc.order;
 
-import com.ntloc.coreapi.order.model.OrderDetails;
+import com.ntloc.coreapi.order.model.OrderState;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
 
-import static com.ntloc.order.OrderState.*;
+import static com.ntloc.coreapi.order.model.OrderState.*;
+
 
 @Getter
 @Setter
@@ -19,18 +22,23 @@ public class Order {
 
     @Id
     private String id;
+    private String customerId;
+    @ElementCollection
+    @CollectionTable(name = "order_line_items")
+    private List<OrderLineItem> lineItems;
 
-    @Enumerated
-    private OrderDetails orderDetails;
-
+    private BigDecimal moneyTotal;
     @Enumerated(value = EnumType.STRING)
-    private OrderState state;
+    @Builder.Default
+    private OrderState state = CREATED;
     @Enumerated(value = EnumType.STRING)
     private FailedReason failedReason;
 
-    public Order(String orderId, OrderDetails orderDetails) {
-        this.id = orderId;
-        this.orderDetails = orderDetails;
+    public Order(String id, String customerId, List<OrderLineItem> lineItems, BigDecimal moneyTotal) {
+        this.id = id;
+        this.customerId = customerId;
+        this.lineItems = lineItems;
+        this.moneyTotal = moneyTotal;
         this.state = CREATED;
     }
 

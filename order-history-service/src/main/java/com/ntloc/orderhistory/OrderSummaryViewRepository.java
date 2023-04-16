@@ -1,0 +1,12 @@
+package com.ntloc.orderhistory;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface OrderSummaryViewRepository extends MongoRepository<OrderSummaryView, String> {
+
+    Optional<OrderSummaryView> findByCustomer_CustomerId(String customerId);
+}

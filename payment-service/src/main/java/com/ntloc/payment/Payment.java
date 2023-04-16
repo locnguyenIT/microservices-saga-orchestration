@@ -5,7 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static com.ntloc.payment.PaymentState.*;
+import static com.ntloc.payment.PaymentState.FAILED;
+import static com.ntloc.payment.PaymentState.SUCCEEDED;
 
 @Getter
 @Setter

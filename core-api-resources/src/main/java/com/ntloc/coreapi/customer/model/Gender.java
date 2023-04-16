@@ -1,4 +1,4 @@
-package com.ntloc.customer;
+package com.ntloc.coreapi.customer.model;
 
 public enum Gender {
 

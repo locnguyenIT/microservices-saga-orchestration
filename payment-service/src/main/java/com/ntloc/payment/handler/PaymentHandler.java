@@ -1,8 +1,6 @@
 package com.ntloc.payment.handler;
 
-import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
 import com.ntloc.coreapi.order.event.OrderCompletedEvent;
-import com.ntloc.coreapi.order.event.OrderCreatedEvent;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import com.ntloc.payment.Payment;
 import com.ntloc.payment.PaymentRepository;
@@ -28,7 +26,7 @@ public class PaymentHandler {
 
     @EventHandler
     public void on(OrderCompletedEvent event) {
-        log.info("Payment handler  OrderCompletedEvent : {}",event);
+        log.info("Payment handler  OrderCompletedEvent : {}", event);
 //        Payment order = new Payment(event.paymentId(), event.orderId());
 //        paymentRepository.save(order);
     }

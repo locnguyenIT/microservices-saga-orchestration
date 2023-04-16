@@ -13,8 +13,12 @@ management:
 #Spring
 spring:
   application:
-    name: order-service
+    name: order-history-service
   data:
     mongodb:
       uri: mongodb://localhost:27017
-      database: orderhistory
+      database: order_history
+#Axon
+axon:
+  serializer:
+    general: jackson

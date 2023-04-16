@@ -1,4 +1,4 @@
-package com.ntloc.order;
+package com.ntloc.coreapi.order.model;
 
 public enum OrderState {
 

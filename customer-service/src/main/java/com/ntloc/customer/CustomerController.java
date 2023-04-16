@@ -1,13 +1,12 @@
 package com.ntloc.customer;
 
+import com.ntloc.coreapi.customer.model.CreateCustomerRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @AllArgsConstructor
 @Slf4j
@@ -23,8 +22,13 @@ public class CustomerController {
     }
 
     @GetMapping(path = "/{id}")
-    public CustomerDTO getCustomer(@PathVariable("id") Long id) {
+    public CustomerDTO getCustomer(@PathVariable("id") String id) {
         return customerService.getCustomer(id);
+    }
+
+    @PostMapping
+    public CompletableFuture<String> createCustomer(@RequestBody CreateCustomerRequest createCustomerRequest) {
+        return customerService.createCustomer(createCustomerRequest);
     }
 
 }

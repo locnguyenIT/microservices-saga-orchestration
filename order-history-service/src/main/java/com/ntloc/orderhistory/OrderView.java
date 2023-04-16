@@ -1,12 +1,14 @@
 package com.ntloc.orderhistory;
 
 import com.ntloc.coreapi.order.model.FailedReason;
-import com.ntloc.coreapi.order.model.OrderDetails;
+import com.ntloc.coreapi.order.model.OrderLineItem;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import static com.ntloc.orderhistory.OrderState.*;
+import java.math.BigDecimal;
+import java.util.List;
+
+import static com.ntloc.orderhistory.OrderState.CANCELLED;
+import static com.ntloc.orderhistory.OrderState.CREATED;
 
 @Getter
 @Setter
@@ -14,33 +16,24 @@ import static com.ntloc.orderhistory.OrderState.*;
 @NoArgsConstructor
 @ToString
 @Builder
-@Document(collection = "orderview")
 public class OrderView {
 
-    @Id
-    private String consumerId;
     private String orderId;
-
-    private OrderDetails orderDetails;
-    private OrderState state;
+    private List<OrderLineItem> lineItems;
+    private BigDecimal moneyTotal;
+    @Builder.Default
+    private OrderState state = CREATED;
     private FailedReason failedReason;
-    private String customerId;
-    private String customerName;
 
-    public OrderView(String consumerId, String orderId, OrderDetails orderDetails, String customerId, String customerName) {
-        this.consumerId = consumerId;
+    public OrderView(String orderId, List<OrderLineItem> lineItems, BigDecimal moneyTotal) {
         this.orderId = orderId;
-        this.orderDetails = orderDetails;
+        this.lineItems = lineItems;
+        this.moneyTotal = moneyTotal;
         this.state = CREATED;
-        this.customerId = customerId;
-        this.customerName = customerName;
     }
 
     public void cancel() {
         this.state = CANCELLED;
     }
 
-    public void refund() {
-        this.state = REFUNDED;
-    }
 }

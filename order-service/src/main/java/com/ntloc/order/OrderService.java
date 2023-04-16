@@ -40,9 +40,9 @@ public class OrderService {
         CreateOrderCommand createOrderCommand = new CreateOrderCommand(UUID.randomUUID().toString(),
                 OrderDetails.builder()
                         .customerId(createOrderRequest.customerId())
-                        .productId(createOrderRequest.productId())
-                        .quantity(createOrderRequest.quantity())
-                        .totalMoney(createOrderRequest.totalMoney()).build()
+                        .lineItems(createOrderRequest.lineItems())
+                        .totalMoney(createOrderRequest.moneyTotal())
+                        .build()
         );
         return commandGateway.send(createOrderCommand);
 

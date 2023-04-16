@@ -1,10 +1,9 @@
 package com.ntloc.customer;
 
-import java.math.BigDecimal;
+import com.ntloc.coreapi.customer.model.Gender;
 
-public record CustomerDTO(Long id,
+public record CustomerDTO(String id,
                           String name,
                           String email,
-                          Gender gender,
-                          BigDecimal money) {
+                          Gender gender) {
 }

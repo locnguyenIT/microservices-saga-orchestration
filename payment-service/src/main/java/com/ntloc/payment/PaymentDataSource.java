@@ -12,7 +12,7 @@ public class PaymentDataSource {
     @Bean
     CommandLineRunner commandLineRunner(PaymentRepository paymentRepository) {
         return args -> {
-            Payment payment = new Payment(UUID.randomUUID().toString(),UUID.randomUUID().toString());
+            Payment payment = new Payment(UUID.randomUUID().toString(), UUID.randomUUID().toString());
             paymentRepository.save(payment);
         };
     }

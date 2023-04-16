@@ -1,9 +1,7 @@
-package com.ntloc.customer;
+package com.ntloc.orderhistory;
 
 import com.ntloc.coreapi.customer.model.Gender;
 import lombok.*;
-
-import javax.persistence.*;
 
 @Getter
 @Setter
@@ -11,15 +9,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 @Builder
-@Entity
-@Table(name = "customer")
-public class Customer {
+public class CustomerView {
 
-    @Id
-    private String id;
+    private String customerId;
     private String name;
-    private String email;
-    @Enumerated(value = EnumType.STRING)
-    private Gender gender;
 
+    private String email;
+    private Gender gender;
 }

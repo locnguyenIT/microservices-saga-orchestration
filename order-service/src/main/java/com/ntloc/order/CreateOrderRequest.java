@@ -1,9 +1,11 @@
 package com.ntloc.order;
 
-import java.math.BigDecimal;
+import com.ntloc.coreapi.order.model.OrderLineItem;
 
-public record CreateOrderRequest(Long customerId,
-                                 Long productId,
-                                 Integer quantity,
-                                 BigDecimal totalMoney) {
+import java.math.BigDecimal;
+import java.util.List;
+
+public record CreateOrderRequest(String customerId,
+                                 List<OrderLineItem> lineItems,
+                                 BigDecimal moneyTotal) {
 }
