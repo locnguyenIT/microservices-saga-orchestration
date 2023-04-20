@@ -20,6 +20,7 @@ public class PaymentAggregate {
 
     @AggregateIdentifier
     private String paymentId;
+    private String orderId;
     private PaymentState state;
 
     public PaymentAggregate() {
@@ -39,6 +40,7 @@ public class PaymentAggregate {
     public void on(PaymentSucceededEvent event) {
         log.info("Pull PaymentSucceededEvent of paymentId: {}: " + event.paymentId());
         this.paymentId = event.paymentId();
+        this.orderId = event.orderId();
         this.state = SUCCEEDED;
         log.info("Updated OrderAggregate after PaymentValidatedEvent: " + this);
     }

@@ -20,6 +20,7 @@ public class DeliveryAggregate {
 
     @AggregateIdentifier
     private String deliveryId;
+    private String orderId;
     private DeliveryState state;
 
     public DeliveryAggregate() {
@@ -39,6 +40,7 @@ public class DeliveryAggregate {
     public void on(OrderDeliveredEvent event) {
         log.info("Pull OrderDeliveredEvent of orderId: {}: " + event.orderId());
         this.deliveryId = event.deliveryId();
+        this.orderId = event.orderId();
         this.state = DELIVERED;
         log.info("Updated DeliveryAggregate after OrderDeliveredEvent: " + this);
     }
