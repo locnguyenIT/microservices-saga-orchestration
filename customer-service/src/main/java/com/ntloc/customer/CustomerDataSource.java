@@ -18,7 +18,7 @@ public class CustomerDataSource {
                     .id(UUID.randomUUID().toString())
                     .name("Nguyen Thanh Loc")
                     .email("loc.nguyenthanh2@vn.bosch.com")
-                    .gender(Gender.FEMALE)
+                    .gender(Gender.MALE)
                     .build();
 
             customerRepository.saveAll(List.of(loc));

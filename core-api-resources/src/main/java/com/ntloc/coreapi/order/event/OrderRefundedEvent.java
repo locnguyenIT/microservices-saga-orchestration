@@ -1,5 +1,5 @@
 package com.ntloc.coreapi.order.event;
 
-public record OrderRefundedEvent(String orderId) {
+public record OrderRefundedEvent(String orderId, String customerId) {
 
 }

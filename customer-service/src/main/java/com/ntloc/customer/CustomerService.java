@@ -31,9 +31,8 @@ public class CustomerService {
     }
 
     public CustomerDTO getCustomer(String id) {
-        CustomerDTO customerDTO = customerRepository.findById(id).map(customerMapper::toCustomerDTO).orElseThrow(() ->
+        return customerRepository.findById(id).map(customerMapper::toCustomerDTO).orElseThrow(() ->
                 new ResourceNotFoundException(CUSTOMER_WAS_NOT_FOUND));
-        return customerDTO;
     }
 
     public CompletableFuture<String> createCustomer(CreateCustomerRequest createCustomerRequest) {

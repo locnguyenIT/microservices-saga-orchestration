@@ -1,5 +1,6 @@
 package com.ntloc.payment;
 
+import com.ntloc.coreapi.messages.FailedReason;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,8 +31,16 @@ public class Payment {
     public Payment(String id, String orderId) {
         this.id = id;
         this.orderId = orderId;
-        this.createAt = LocalDateTime.now();
         this.state = SUCCEEDED;
+        this.createAt = LocalDateTime.now();
+    }
+
+    public Payment(String id, String orderId, FailedReason failedReason) {
+        this.id = id;
+        this.orderId = orderId;
+        this.state = FAILED;
+        this.failedReason = failedReason;
+        this.createAt = LocalDateTime.now();
     }
 
     public void succeeded() {

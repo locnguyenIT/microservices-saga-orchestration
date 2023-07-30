@@ -5,7 +5,7 @@ import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
 import com.ntloc.coreapi.order.command.CompleteOrderCommand;
 import com.ntloc.coreapi.order.event.OrderCompletedEvent;
 import com.ntloc.coreapi.order.event.OrderCreatedEvent;
-import com.ntloc.coreapi.payment.command.ProcessPaymentCommand;
+import com.ntloc.coreapi.payment.command.PaymentOrderCommand;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -29,10 +29,10 @@ public class CreateOrderSaga {
     public void on(OrderCreatedEvent event) {
         log.info("OrderCreatedEvent in Saga for Order Id : {}",
                 event.orderId());
-        ProcessPaymentCommand processPaymentCommand = ProcessPaymentCommand.builder()
+        PaymentOrderCommand paymentOrderCommand = PaymentOrderCommand.builder()
                 .paymentId(UUID.randomUUID().toString())
                 .orderId(event.orderId()).build();
-        commandGateway.send(processPaymentCommand);
+        commandGateway.send(paymentOrderCommand);
     }
 
     @SagaEventHandler(associationProperty = "orderId")
@@ -49,9 +49,9 @@ public class CreateOrderSaga {
     public void on(OrderDeliveredEvent event) {
         log.info("OrderDeliveredEvent in Saga for Order Id : {}",
                 event.orderId());
-        CompleteOrderCommand orderCompletedEvent = CompleteOrderCommand.builder()
+        CompleteOrderCommand completeOrderCommand = CompleteOrderCommand.builder()
                 .orderId(event.orderId()).build();
-        commandGateway.send(orderCompletedEvent);
+        commandGateway.send(completeOrderCommand);
     }
 
     @EndSaga
@@ -59,6 +59,7 @@ public class CreateOrderSaga {
     public void on(OrderCompletedEvent event) {
         log.info("OrderCompletedEvent in Saga for Order Id : {}",
                 event.orderId());
+        //TODO: Send notification to notification service
     }
 
 

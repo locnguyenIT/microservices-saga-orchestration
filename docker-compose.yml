@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  axon:
+    container_name: axon
+    image: axoniq/axonserver:4.6.9-jdk-17-dev
+    ports:
+      - 8024:8024
+      - 8124:8124
+    restart: unless-stopped

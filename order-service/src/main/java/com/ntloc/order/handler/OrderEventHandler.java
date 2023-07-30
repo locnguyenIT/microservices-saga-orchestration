@@ -1,9 +1,11 @@
-package com.ntloc.order.saga.event.handler;
+package com.ntloc.order.handler;
 
+import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
 import com.ntloc.coreapi.order.event.OrderCancelledEvent;
 import com.ntloc.coreapi.order.event.OrderCompletedEvent;
 import com.ntloc.coreapi.order.event.OrderCreatedEvent;
 import com.ntloc.coreapi.order.event.OrderRefundedEvent;
+import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import com.ntloc.order.Order;
 import com.ntloc.order.OrderLineItem;
 import com.ntloc.order.OrderRepository;
@@ -29,10 +31,33 @@ public class OrderEventHandler {
     @EventHandler
     public void on(OrderCreatedEvent event) {
         List<OrderLineItem> lineItems = new ArrayList<>();
-
         BeanUtils.copyProperties(event.orderDetails().lineItems(),
                 lineItems);
         Order order = new Order(event.orderId(), event.orderDetails().customerId(), lineItems, event.orderDetails().totalMoney());
+        orderRepository.save(order);
+    }
+
+    @EventHandler
+    public void on(PaymentSucceededEvent event) {
+        Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
+                new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
+        order.paid();
+        orderRepository.save(order);
+    }
+
+    @EventHandler
+    public void on(OrderDeliveredEvent event) {
+        Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
+                new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
+        order.delivered();
+        orderRepository.save(order);
+    }
+
+    @EventHandler
+    public void on(OrderCompletedEvent event) {
+        Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
+                new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
+        order.completed();
         orderRepository.save(order);
     }
 
@@ -49,14 +74,6 @@ public class OrderEventHandler {
         Order order = orderRepository.findById(orderRefundedEvent.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.refund();
-        orderRepository.save(order);
-    }
-
-    @EventHandler
-    public void on(OrderCompletedEvent event) {
-        Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
-                new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
-        order.completed();
         orderRepository.save(order);
     }
 

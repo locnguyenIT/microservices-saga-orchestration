@@ -16,13 +16,11 @@ public class DeliveryService {
     private final DeliveryMapper deliveryMapper;
 
     public List<DeliveryDTO> getAllDelivery() {
-        List<DeliveryDTO> listDeliveryDTO = deliveryMapper.toListDeliveryDTO(deliveryRepository.findAll());
-        return listDeliveryDTO;
+        return deliveryMapper.toListDeliveryDTO(deliveryRepository.findAll());
     }
 
     public DeliveryDTO getDelivery(Long id) {
-        DeliveryDTO deliveryDTO = deliveryRepository.findById(id).map(deliveryMapper::toDeliveryDTO).orElseThrow(() ->
+        return deliveryRepository.findById(id).map(deliveryMapper::toDeliveryDTO).orElseThrow(() ->
                 new ResourceNotFoundException(DELIVERY_WAS_NOT_FOUND));
-        return deliveryDTO;
     }
 }

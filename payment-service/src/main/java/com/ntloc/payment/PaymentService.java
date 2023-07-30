@@ -16,14 +16,12 @@ public class PaymentService {
     private final PaymentMapper paymentMapper;
 
     public List<PaymentDTO> getAllPayment() {
-        List<Payment> allOrders = paymentRepository.findAll();
-        return paymentMapper.toListPaymentDTO(allOrders);
+        return paymentMapper.toListPaymentDTO(paymentRepository.findAll());
     }
 
     public PaymentDTO getPayment(String id) {
-        Payment payment = paymentRepository.findById(id).orElseThrow(() ->
-                new ResolutionException(PAYMENT_WAS_NOT_FOUND));
-        return paymentMapper.toPaymentDTO(payment);
+        return paymentMapper.toPaymentDTO(paymentRepository.findById(id).orElseThrow(() ->
+                new ResolutionException(PAYMENT_WAS_NOT_FOUND)));
     }
 
 }

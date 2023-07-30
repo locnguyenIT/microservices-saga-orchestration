@@ -1,13 +1,14 @@
 package com.ntloc.order;
 
-import com.ntloc.coreapi.order.model.OrderState;
+import com.ntloc.coreapi.messages.FailedReason;
+import com.ntloc.coreapi.messages.OrderState;
 import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.ntloc.coreapi.order.model.OrderState.*;
+import static com.ntloc.coreapi.messages.OrderState.*;
 
 
 @Getter
@@ -26,11 +27,9 @@ public class Order {
     @ElementCollection
     @CollectionTable(name = "order_line_items")
     private List<OrderLineItem> lineItems;
-
     private BigDecimal moneyTotal;
     @Enumerated(value = EnumType.STRING)
-    @Builder.Default
-    private OrderState state = CREATED;
+    private OrderState state;
     @Enumerated(value = EnumType.STRING)
     private FailedReason failedReason;
 
@@ -42,16 +41,29 @@ public class Order {
         this.state = CREATED;
     }
 
-    public void cancel() {
-        this.state = CANCELLED;
+    public void paid() {
+        this.state = PAID;
     }
 
-    public void refund() {
-        this.state = REFUNDED;
+    public void delivered() {
+        this.state = DELIVERED;
     }
 
     public void completed() {
         this.state = COMPLETED;
+    }
+    public void cancel() {
+        this.state = CANCELLED;
+//        switch (this.state) {
+//            case CREATED -> throw new IllegalStateException("Can't be cancel in order created state");
+//            case COMPLETED -> this.state = CANCELLED;
+//            default -> throw new IllegalStateException("Can't cancel in this state: " + this.state);
+//        }
+
+    }
+
+    public void refund() {
+        this.state = REFUNDED;
     }
 
     public void failed(FailedReason failedReason) {

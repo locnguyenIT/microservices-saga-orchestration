@@ -1,6 +1,7 @@
 package com.ntloc.payment.aggregate;
 
-import com.ntloc.coreapi.payment.command.ProcessPaymentCommand;
+import com.ntloc.coreapi.payment.command.PaymentOrderCommand;
+import com.ntloc.coreapi.payment.event.PaymentFailedEvent;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import com.ntloc.payment.PaymentState;
 import lombok.ToString;
@@ -11,6 +12,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
+import static com.ntloc.payment.PaymentState.FAILED;
 import static com.ntloc.payment.PaymentState.SUCCEEDED;
 
 @Aggregate
@@ -27,21 +29,28 @@ public class PaymentAggregate {
     }
 
     @CommandHandler
-    public PaymentAggregate(ProcessPaymentCommand command) {
+    public PaymentAggregate(PaymentOrderCommand command) {
         log.info("Receive ProcessPaymentCommand for orderId : {}", command.orderId());
         //TODO: validate the ProcessPaymentCommand
-        PaymentSucceededEvent paymentSucceededEvent = new PaymentSucceededEvent(command.paymentId(),
-                command.orderId());
-        AggregateLifecycle.apply(paymentSucceededEvent);
-        log.info("Pushed PaymentSucceededEvent of orderId : {}", paymentSucceededEvent.orderId());
+
+        AggregateLifecycle.apply(new PaymentSucceededEvent(command.paymentId(), command.orderId()));
     }
 
     @EventSourcingHandler
     public void on(PaymentSucceededEvent event) {
-        log.info("Pull PaymentSucceededEvent of paymentId: {}: " + event.paymentId());
+        log.info("Receive PaymentSucceededEvent of orderId: {} ", event.orderId());
         this.paymentId = event.paymentId();
         this.orderId = event.orderId();
         this.state = SUCCEEDED;
-        log.info("Updated OrderAggregate after PaymentValidatedEvent: " + this);
+        log.info("Updated PaymentAggregate after PaymentSucceededEvent: " + this);
+    }
+
+    @EventSourcingHandler
+    public void on(PaymentFailedEvent event) {
+        log.info("Receive PaymentFailedEvent of orderId: {} ", event.paymentId());
+        this.paymentId = event.paymentId();
+        this.orderId = event.orderId();
+        this.state = FAILED;
+        log.info("Updated PaymentAggregate after PaymentFailedEvent: " + this);
     }
 }

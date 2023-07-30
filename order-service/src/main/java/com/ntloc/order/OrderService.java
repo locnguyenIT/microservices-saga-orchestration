@@ -26,14 +26,12 @@ public class OrderService {
     private final CommandGateway commandGateway;
 
     public List<OrderDTO> getAllOrders() {
-        List<Order> listOrder = orderRepository.findAll();
-        return orderMapper.toListOrderDTO(listOrder);
+        return orderMapper.toListOrderDTO(orderRepository.findAll());
     }
 
     public OrderDTO getOrder(String id) {
-        Order order = orderRepository.findById(id).orElseThrow(() ->
+        return orderRepository.findById(id).map(orderMapper::toOrderDTO).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
-        return orderMapper.toOrderDTO(order);
     }
 
     public CompletableFuture<String> createOrder(CreateOrderRequest createOrderRequest) {
@@ -49,12 +47,16 @@ public class OrderService {
     }
 
     public CompletableFuture<String> cancelOrder(String id) {
-        CancelOrderCommand cancelOrderCommand = new CancelOrderCommand(id);
+        Order order = orderRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
+        CancelOrderCommand cancelOrderCommand = new CancelOrderCommand(id,order.getCustomerId());
         return commandGateway.send(cancelOrderCommand);
     }
 
     public CompletableFuture<String> refundOrder(String id) {
-        RefundOrderCommand cancelOrderCommand = new RefundOrderCommand(id);
+        Order order = orderRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
+        RefundOrderCommand cancelOrderCommand = new RefundOrderCommand(id,order.getCustomerId());
         return commandGateway.send(cancelOrderCommand);
     }
 }

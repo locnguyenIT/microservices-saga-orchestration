@@ -1,4 +1,4 @@
-package com.ntloc.orderhistory;
+package com.ntloc.coreapi.messages;
 
 public enum OrderState {
 

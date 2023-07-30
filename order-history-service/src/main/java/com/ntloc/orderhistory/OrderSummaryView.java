@@ -20,10 +20,18 @@ public class OrderSummaryView {
     @Id
     private String id;
     private CustomerView customer;
-    private List<OrderView> orders = new ArrayList<>();
+    private List<OrderView> orders;
 
     public OrderSummaryView(CustomerView customer, List<OrderView> orders) {
         this.customer = customer;
         this.orders = orders;
     }
+
+    public OrderView getOrderByOrderId(String orderId) {
+        return this.orders.stream()
+                .filter(order -> order.getOrderId().equals(orderId))
+                .findFirst()
+                .get();
+    }
+
 }

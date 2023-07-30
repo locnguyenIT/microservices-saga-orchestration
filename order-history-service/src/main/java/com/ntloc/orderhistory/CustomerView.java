@@ -13,7 +13,6 @@ public class CustomerView {
 
     private String customerId;
     private String name;
-
     private String email;
     private Gender gender;
 }

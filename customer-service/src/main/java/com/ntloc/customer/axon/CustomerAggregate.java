@@ -33,7 +33,7 @@ public class CustomerAggregate {
 
     @EventSourcingHandler
     public void on(CustomerCreatedEvent event) {
-        log.info("Pull CustomerCreatedEvent: {} " + event);
+        log.info("Pull CustomerCreatedEvent: {} ", event);
         this.customerId = event.customerId();
         log.info("Updated CustomerAggregate after CustomerCreatedEvent: " + this);
     }
