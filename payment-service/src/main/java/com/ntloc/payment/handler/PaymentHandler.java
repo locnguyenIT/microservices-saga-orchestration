@@ -26,7 +26,7 @@ public class PaymentHandler {
 
     @EventHandler
     public void on(PaymentFailedEvent event) {
-        Payment order = new Payment(event.paymentId(), event.orderId(), event.failedReason());
+        Payment order = new Payment(event.paymentId(), event.orderId(), event.reason());
         paymentRepository.save(order);
     }
 

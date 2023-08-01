@@ -72,7 +72,7 @@ public class OrderAggregate {
 
     @EventSourcingHandler
     public void on(OrderCreatedEvent orderCreatedEvent) {
-        log.info("Receive OrderCreatedEvent of orderId: {} ",orderCreatedEvent.orderId());
+        log.info("Receive OrderCreatedEvent of orderId: {} ", orderCreatedEvent.orderId());
         this.orderId = orderCreatedEvent.orderId();
         this.customerId = orderCreatedEvent.orderDetails().customerId();
         this.state = CREATED;
@@ -82,35 +82,35 @@ public class OrderAggregate {
 
     @EventSourcingHandler
     public void on(OrderCancelledEvent event) {
-        log.info("Receive OrderCancelledEvent of orderId: {} ",event.orderId());
+        log.info("Receive OrderCancelledEvent of orderId: {} ", event.orderId());
         this.state = CANCELLED;
         log.info("Updated OrderAggregate after OrderCancelledEvent: " + this);
     }
 
     @EventSourcingHandler
     public void on(OrderRefundedEvent event) {
-        log.info("Receive OrderReturnedEvent of orderId: {}: " ,event.orderId());
+        log.info("Receive OrderReturnedEvent of orderId: {}: ", event.orderId());
         this.state = REFUNDED;
         log.info("Updated OrderAggregate after OrderReturnedEvent: " + this);
     }
 
     @EventSourcingHandler
     public void on(PaymentSucceededEvent event) {
-        log.info("Receive PaymentSucceededEvent of orderId: {}" ,event.orderId());
+        log.info("Receive PaymentSucceededEvent of orderId: {}", event.orderId());
         this.state = PAID;
         log.info("Updated OrderAggregate after PaymentSucceededEvent: " + this);
     }
 
     @EventSourcingHandler
     public void on(OrderDeliveredEvent event) {
-        log.info("Receive OrderDeliveredEvent of orderId: {}: " ,event.orderId());
+        log.info("Receive OrderDeliveredEvent of orderId: {}: ", event.orderId());
         this.state = DELIVERED;
         log.info("Updated OrderAggregate after OrderDeliveredEvent: " + this);
     }
 
     @EventSourcingHandler
     public void on(OrderCompletedEvent event) {
-        log.info("Receive OrderCompletedEvent of orderId: {}: " ,event.orderId());
+        log.info("Receive OrderCompletedEvent of orderId: {}: ", event.orderId());
         this.state = COMPLETED;
         log.info("Updated OrderAggregate after OrderCompletedEvent: " + this);
     }

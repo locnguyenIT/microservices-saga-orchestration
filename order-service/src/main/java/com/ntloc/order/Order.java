@@ -1,7 +1,7 @@
 package com.ntloc.order;
 
-import com.ntloc.coreapi.messages.FailedReason;
 import com.ntloc.coreapi.messages.OrderState;
+import com.ntloc.coreapi.messages.Reason;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,7 +31,7 @@ public class Order {
     @Enumerated(value = EnumType.STRING)
     private OrderState state;
     @Enumerated(value = EnumType.STRING)
-    private FailedReason failedReason;
+    private Reason reason;
 
     public Order(String id, String customerId, List<OrderLineItem> lineItems, BigDecimal moneyTotal) {
         this.id = id;
@@ -39,6 +39,10 @@ public class Order {
         this.lineItems = lineItems;
         this.moneyTotal = moneyTotal;
         this.state = CREATED;
+    }
+
+    public static Order create(String id, String customerId, List<OrderLineItem> lineItems, BigDecimal moneyTotal) {
+        return new Order(id, customerId, lineItems, moneyTotal);
     }
 
     public void paid() {
@@ -52,6 +56,7 @@ public class Order {
     public void completed() {
         this.state = COMPLETED;
     }
+
     public void cancel() {
         this.state = CANCELLED;
 //        switch (this.state) {
@@ -64,11 +69,6 @@ public class Order {
 
     public void refund() {
         this.state = REFUNDED;
-    }
-
-    public void failed(FailedReason failedReason) {
-        this.state = FAILED;
-        this.failedReason = failedReason;
     }
 
 }

@@ -41,8 +41,10 @@ public class OrderHistoryProjection {
         log.info("Handle OrderCancelledEvent: {}", event);
         orderHistoryService.cancelOrder(event.orderId(), event.customerId());
     }
+
     @EventHandler
     public void on(PaymentSucceededEvent event) {
+        log.info("OrderHistory receive PaymentSucceededEvent: {}", event);
         orderHistoryService.paidOrder(event.orderId());
     }
 

@@ -33,7 +33,7 @@ public class OrderEventHandler {
         List<OrderLineItem> lineItems = new ArrayList<>();
         BeanUtils.copyProperties(event.orderDetails().lineItems(),
                 lineItems);
-        Order order = new Order(event.orderId(), event.orderDetails().customerId(), lineItems, event.orderDetails().totalMoney());
+        Order order = Order.create(event.orderId(), event.orderDetails().customerId(), lineItems, event.orderDetails().totalMoney());
         orderRepository.save(order);
     }
 

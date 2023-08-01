@@ -1,16 +1,16 @@
 package com.ntloc.order;
 
-import com.ntloc.coreapi.messages.FailedReason;
 import com.ntloc.coreapi.messages.OrderState;
+import com.ntloc.coreapi.messages.Reason;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public record OrderDTO(String id,
-                       Long customerId,
+                       String customerId,
                        List<OrderLineItem> lineItems,
                        BigDecimal moneyTotal,
                        OrderState state,
-                       FailedReason failedReason) {
+                       Reason reason) {
 
 }

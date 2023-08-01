@@ -1,6 +1,6 @@
 package com.ntloc.coreapi.messages;
 
-public enum FailedReason {
+public enum Reason {
 
     INSUFFICIENT_CREDIT,
     INSUFFICIENT_QUANTITY,

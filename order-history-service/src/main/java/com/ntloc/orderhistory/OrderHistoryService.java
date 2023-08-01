@@ -10,8 +10,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.ntloc.coreapi.messages.OrderState.*;
 
@@ -57,11 +55,8 @@ public class OrderHistoryService {
             orderSummaryView = orderSummaryViewRepository.findByCustomer_CustomerId(customerId.get()).orElseThrow(() ->
                     new IllegalStateException(String.format("Order of customerId %s was not found", customerId)));
         } else {
-            List<OrderSummaryView> allOrder = orderSummaryViewRepository.findAll();
-            orderSummaryView = allOrder.stream().filter(os -> os.getOrders().stream()
-                                                        .anyMatch(o -> o.getOrderId().equals(orderId))
-                                    )
-                                    .findFirst().get();
+            orderSummaryView = orderSummaryViewRepository.findByOrders_OrderId(orderId).orElseThrow(() ->
+                    new IllegalStateException(String.format("OrderId %s was not found", orderId)));
 
         }
         orderSummaryView.getOrderByOrderId(orderId).setState(state);
@@ -70,11 +65,11 @@ public class OrderHistoryService {
     }
 
     public void paidOrder(String orderId) {
-        updateOrderState(orderId,Optional.empty(),PAID);
+        updateOrderState(orderId, Optional.empty(), PAID);
     }
 
     public void deliveryOrder(String orderId) {
-        updateOrderState(orderId,Optional.empty(),DELIVERED);
+        updateOrderState(orderId, Optional.empty(), DELIVERED);
     }
 
     public void completeOrder(String orderId) {
@@ -88,7 +83,6 @@ public class OrderHistoryService {
     public void refundOrder(String orderId, String customerId) {
         updateOrderState(orderId, Optional.of(customerId), REFUNDED);
     }
-
 
 
 }

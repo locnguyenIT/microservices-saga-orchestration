@@ -7,6 +7,7 @@ import java.util.Optional;
 
 @Repository
 public interface OrderSummaryViewRepository extends MongoRepository<OrderSummaryView, String> {
+    Optional<OrderSummaryView> findByOrders_OrderId(String orderId);
 
     Optional<OrderSummaryView> findByCustomer_CustomerId(String customerId);
 }

@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 import java.util.UUID;
 
-import static com.ntloc.coreapi.messages.FailedReason.INSUFFICIENT_CREDIT;
+import static com.ntloc.coreapi.messages.Reason.INSUFFICIENT_CREDIT;
+
 
 @Configuration
 public class PaymentDataSource {
@@ -16,8 +17,8 @@ public class PaymentDataSource {
     CommandLineRunner commandLineRunner(PaymentRepository paymentRepository) {
         return args -> {
             Payment succeed = new Payment(UUID.randomUUID().toString(), UUID.randomUUID().toString());
-            Payment failed = new Payment(UUID.randomUUID().toString(), UUID.randomUUID().toString(),INSUFFICIENT_CREDIT);
-            paymentRepository.saveAll(List.of(succeed,failed));
+            Payment failed = new Payment(UUID.randomUUID().toString(), UUID.randomUUID().toString(), INSUFFICIENT_CREDIT);
+            paymentRepository.saveAll(List.of(succeed, failed));
         };
     }
 }
