@@ -10,6 +10,7 @@ import com.ntloc.order.Order;
 import com.ntloc.order.OrderLineItem;
 import com.ntloc.order.OrderRepository;
 import com.ntloc.order.exception.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.List;
 import static com.ntloc.order.OrderConstant.MessagesConstant.ORDER_WAS_NOT_FOUND;
 
 @Component
+@Slf4j
 public class OrderEventHandler {
 
     private final OrderRepository orderRepository;
@@ -39,6 +41,7 @@ public class OrderEventHandler {
 
     @EventHandler
     public void on(PaymentSucceededEvent event) {
+        log.info("Event handle PaymentSucceededEvent {}", event);
         Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.paid();
@@ -47,6 +50,7 @@ public class OrderEventHandler {
 
     @EventHandler
     public void on(OrderDeliveredEvent event) {
+        log.info("Event handle OrderDeliveredEvent {}", event);
         Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.delivered();
@@ -55,6 +59,7 @@ public class OrderEventHandler {
 
     @EventHandler
     public void on(OrderCompletedEvent event) {
+        log.info("Event handle OrderCompletedEvent {}", event);
         Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.completed();
@@ -62,16 +67,18 @@ public class OrderEventHandler {
     }
 
     @EventHandler
-    public void on(OrderCancelledEvent orderCancelledEvent) {
-        Order order = orderRepository.findById(orderCancelledEvent.orderId()).orElseThrow(() ->
+    public void on(OrderCancelledEvent event) {
+        log.info("Event handle OrderCancelledEvent {}", event);
+        Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.cancel();
         orderRepository.save(order);
     }
 
     @EventHandler
-    public void on(OrderRefundedEvent orderRefundedEvent) {
-        Order order = orderRepository.findById(orderRefundedEvent.orderId()).orElseThrow(() ->
+    public void on(OrderRefundedEvent event) {
+        log.info("Event handle OrderRefundedEvent {}", event);
+        Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.refund();
         orderRepository.save(order);

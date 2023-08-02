@@ -94,19 +94,19 @@ public class OrderAggregate {
         log.info("Updated OrderAggregate after OrderReturnedEvent: " + this);
     }
 
-    @EventSourcingHandler
-    public void on(PaymentSucceededEvent event) {
-        log.info("Receive PaymentSucceededEvent of orderId: {}", event.orderId());
-        this.state = PAID;
-        log.info("Updated OrderAggregate after PaymentSucceededEvent: " + this);
-    }
-
-    @EventSourcingHandler
-    public void on(OrderDeliveredEvent event) {
-        log.info("Receive OrderDeliveredEvent of orderId: {}: ", event.orderId());
-        this.state = DELIVERED;
-        log.info("Updated OrderAggregate after OrderDeliveredEvent: " + this);
-    }
+//    @EventSourcingHandler
+//    public void on(PaymentSucceededEvent event) {
+//        log.info("Receive PaymentSucceededEvent of orderId: {}", event.orderId());
+//        this.state = PAID;
+//        log.info("Updated OrderAggregate after PaymentSucceededEvent: " + this);
+//    }
+//
+//    @EventSourcingHandler
+//    public void on(OrderDeliveredEvent event) {
+//        log.info("Receive OrderDeliveredEvent of orderId: {}: ", event.orderId());
+//        this.state = DELIVERED;
+//        log.info("Updated OrderAggregate after OrderDeliveredEvent: " + this);
+//    }
 
     @EventSourcingHandler
     public void on(OrderCompletedEvent event) {
