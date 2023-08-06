@@ -23,7 +23,7 @@ public class OrderDataSource {
                     .id(UUID.randomUUID().toString())
                     .customerId("customerId")
                     .lineItems(Arrays.asList(line))
-                    .moneyTotal(BigDecimal.TEN)
+                    .moneyTotal(1000L)
                     .build();
             orderRepository.save(order);
         };

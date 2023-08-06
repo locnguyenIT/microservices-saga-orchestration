@@ -8,7 +8,7 @@ import java.util.List;
 @Builder
 public record OrderDetails(String customerId,
                            List<OrderLineItem> lineItems,
-                           BigDecimal totalMoney) {
+                           Long totalMoney) {
 
 
 }

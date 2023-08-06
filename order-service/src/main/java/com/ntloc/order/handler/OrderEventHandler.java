@@ -4,6 +4,7 @@ import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
 import com.ntloc.coreapi.order.command.DeliveredOrderUpdateCommand;
 import com.ntloc.coreapi.order.command.PaidOrderUpdateCommand;
 import com.ntloc.coreapi.order.event.*;
+import com.ntloc.coreapi.payment.event.PaymentFailedEvent;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import com.ntloc.order.Order;
 import com.ntloc.order.OrderLineItem;
@@ -12,7 +13,6 @@ import com.ntloc.order.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventHandler;
-import org.axonframework.eventsourcing.eventstore.DomainEventStream;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class OrderEventHandler {
 
     private final OrderRepository orderRepository;
     private final CommandGateway commandGateway;
-    public OrderEventHandler(OrderRepository orderRepository, CommandGateway commandGateway, DomainEventStream domainEventStream) {
+    public OrderEventHandler(OrderRepository orderRepository, CommandGateway commandGateway) {
         this.orderRepository = orderRepository;
         this.commandGateway = commandGateway;
     }

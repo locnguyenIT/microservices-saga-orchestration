@@ -39,7 +39,8 @@ public class CustomerService {
         CreateCustomerCommand createCustomerCommand = new CreateCustomerCommand(UUID.randomUUID().toString(),
                 createCustomerRequest.name(),
                 createCustomerRequest.email(),
-                createCustomerRequest.gender());
+                createCustomerRequest.gender(),
+                createCustomerRequest.money());
         return commandGateway.send(createCustomerCommand);
     }
 }

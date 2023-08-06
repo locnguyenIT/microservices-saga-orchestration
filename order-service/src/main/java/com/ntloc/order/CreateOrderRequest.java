@@ -7,5 +7,5 @@ import java.util.List;
 
 public record CreateOrderRequest(String customerId,
                                  List<OrderLineItem> lineItems,
-                                 BigDecimal moneyTotal) {
+                                 Long moneyTotal) {
 }

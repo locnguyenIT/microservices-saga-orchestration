@@ -27,7 +27,8 @@ public class CustomerAggregate {
         CustomerCreatedEvent customerCreatedEvent = new CustomerCreatedEvent(command.customerId(),
                 command.name(),
                 command.email(),
-                command.gender());
+                command.gender(),
+                command.money());
         AggregateLifecycle.apply(customerCreatedEvent);
     }
 

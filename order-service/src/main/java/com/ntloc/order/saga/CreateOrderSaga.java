@@ -1,5 +1,6 @@
 package com.ntloc.order.saga;
 
+import com.ntloc.coreapi.customer.query.FetchCustomerMoneyQuery;
 import com.ntloc.coreapi.delivery.command.DeliveryOrderCommand;
 import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
 import com.ntloc.coreapi.order.command.CancelOrderCommand;
@@ -14,18 +15,16 @@ import com.ntloc.coreapi.payment.event.PaymentFailedEvent;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.deadline.DeadlineManager;
-import org.axonframework.deadline.annotation.DeadlineHandler;
-import org.axonframework.messaging.Scope;
-import org.axonframework.messaging.ScopeDescriptor;
+import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
+import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Saga
@@ -33,19 +32,29 @@ public class CreateOrderSaga {
 
     @Autowired
     private transient CommandGateway commandGateway;
+    @Autowired
+    private transient QueryGateway queryGateway;
 
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void on(OrderCreatedEvent event) {
         log.info("OrderCreatedEvent in Saga for Order Id : {}",
                 event.orderId());
-        PaymentOrderCommand paymentOrderCommand = new PaymentOrderCommand(UUID.randomUUID().toString(), event.orderId());
+        FetchCustomerMoneyQuery fetchCustomerMoneyQuery = new FetchCustomerMoneyQuery(event.orderDetails().customerId());
+
+        CompletableFuture<Long> customerMoney = queryGateway.query(fetchCustomerMoneyQuery, ResponseTypes.instanceOf(Long.class));
+
+        PaymentOrderCommand paymentOrderCommand = new PaymentOrderCommand(UUID.randomUUID().toString(), event.orderId(),event.orderDetails().totalMoney(), customerMoney.join());
         commandGateway.send(paymentOrderCommand)
                 .exceptionally(ex -> {
-                    CancelOrderCommand cancelOrderCommand = new CancelOrderCommand(event.orderId());
-                    commandGateway.send(cancelOrderCommand);
+                    cancelOrder(event.orderId());
                     return ex;
                 });
+    }
+
+    private void cancelOrder(String orderId) {
+        CancelOrderCommand cancelOrderCommand = new CancelOrderCommand(orderId);
+        commandGateway.send(cancelOrderCommand);
     }
 
     @SagaEventHandler(associationProperty = "orderId")
@@ -62,6 +71,13 @@ public class CreateOrderSaga {
                     commandGateway.send(cancelPaymentCommand);
                     return ex;
                 });
+    }
+
+    @SagaEventHandler(associationProperty = "orderId")
+    public void on(PaymentFailedEvent event) {
+        log.info("PaymentFailedEvent in Saga for Order Id : {}",
+                event.orderId());
+        cancelOrder(event.orderId());
     }
 
 
@@ -95,8 +111,7 @@ public class CreateOrderSaga {
     public void on(PaymentCanceledEvent event) {
         log.info("PaymentCanceledEvent in Saga for Order Id : {}",
                 event.orderId());
-        CancelOrderCommand cancelOrderCommand = new CancelOrderCommand(event.orderId());
-        commandGateway.send(cancelOrderCommand);
+        cancelOrder(event.orderId());
     }
 
 }

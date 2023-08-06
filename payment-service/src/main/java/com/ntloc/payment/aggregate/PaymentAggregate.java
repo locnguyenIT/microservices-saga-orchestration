@@ -14,6 +14,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
+import static com.ntloc.coreapi.messages.Reason.INSUFFICIENT_CREDIT;
 import static com.ntloc.payment.PaymentState.*;
 
 @Aggregate
@@ -33,8 +34,13 @@ public class PaymentAggregate {
     public PaymentAggregate(PaymentOrderCommand command) {
         log.info("Receive ProcessPaymentCommand for orderId : {}", command.orderId());
         //TODO: validate the ProcessPaymentCommand
+        if (command.customerMoney() < command.totalMoney()) {
+            AggregateLifecycle.apply(new PaymentFailedEvent(command.paymentId(),command.orderId(),INSUFFICIENT_CREDIT));
+        } else {
+            AggregateLifecycle.apply(new PaymentSucceededEvent(command.paymentId(),command.orderId()));
+        }
 
-        AggregateLifecycle.apply(new PaymentSucceededEvent(command.paymentId(),command.orderId()));
+
     }
 
     @CommandHandler

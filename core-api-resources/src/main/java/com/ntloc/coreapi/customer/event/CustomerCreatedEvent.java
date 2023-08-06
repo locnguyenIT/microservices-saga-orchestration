@@ -5,5 +5,6 @@ import com.ntloc.coreapi.customer.model.Gender;
 public record CustomerCreatedEvent(String customerId,
                                    String name,
                                    String email,
-                                   Gender gender) {
+                                   Gender gender,
+                                   Long money) {
 }

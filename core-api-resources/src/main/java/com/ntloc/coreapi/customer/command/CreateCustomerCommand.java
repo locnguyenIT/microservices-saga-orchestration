@@ -6,5 +6,6 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 public record CreateCustomerCommand(@TargetAggregateIdentifier String customerId,
                                     String name,
                                     String email,
-                                    Gender gender) {
+                                    Gender gender,
+                                    Long money) {
 }

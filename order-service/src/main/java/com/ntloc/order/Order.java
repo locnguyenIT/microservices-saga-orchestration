@@ -27,13 +27,13 @@ public class Order {
     @ElementCollection
     @CollectionTable(name = "order_line_items")
     private List<OrderLineItem> lineItems;
-    private BigDecimal moneyTotal;
+    private Long moneyTotal;
     @Enumerated(value = EnumType.STRING)
     private OrderState state;
     @Enumerated(value = EnumType.STRING)
     private Reason reason;
 
-    public Order(String id, String customerId, List<OrderLineItem> lineItems, BigDecimal moneyTotal) {
+    public Order(String id, String customerId, List<OrderLineItem> lineItems, Long moneyTotal) {
         this.id = id;
         this.customerId = customerId;
         this.lineItems = lineItems;
@@ -41,7 +41,7 @@ public class Order {
         this.state = CREATED;
     }
 
-    public static Order create(String id, String customerId, List<OrderLineItem> lineItems, BigDecimal moneyTotal) {
+    public static Order create(String id, String customerId, List<OrderLineItem> lineItems, Long moneyTotal) {
         return new Order(id, customerId, lineItems, moneyTotal);
     }
 
