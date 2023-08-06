@@ -39,7 +39,7 @@ public class OrderHistoryProjection {
     @EventHandler
     public void on(OrderCancelledEvent event) {
         log.info("Handle OrderCancelledEvent: {}", event);
-        orderHistoryService.cancelOrder(event.orderId(), event.customerId());
+        orderHistoryService.cancelOrder(event.orderId());
     }
 
     @EventHandler
@@ -57,7 +57,7 @@ public class OrderHistoryProjection {
     @EventHandler
     public void on(OrderRefundedEvent event) {
         log.info("OrderHistory pull OrderRefundedEvent: {}", event);
-        orderHistoryService.refundOrder(event.orderId(), event.customerId());
+        orderHistoryService.refundOrder(event.orderId());
     }
 
     @EventHandler

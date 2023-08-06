@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.ntloc.coreapi.messages.OrderState.*;
 
@@ -49,39 +48,32 @@ public class OrderHistoryService {
 
     }
 
-    private void updateOrderState(String orderId, Optional<String> customerId, OrderState state) {
-        OrderSummaryView orderSummaryView;
-        if (customerId.isPresent()) {
-            orderSummaryView = orderSummaryViewRepository.findByCustomer_CustomerId(customerId.get()).orElseThrow(() ->
-                    new IllegalStateException(String.format("Order of customerId %s was not found", customerId)));
-        } else {
-            orderSummaryView = orderSummaryViewRepository.findByOrders_OrderId(orderId).orElseThrow(() ->
-                    new IllegalStateException(String.format("OrderId %s was not found", orderId)));
-
-        }
+    private void updateOrderState(String orderId, OrderState state) {
+        OrderSummaryView orderSummaryView = orderSummaryViewRepository.findByOrders_OrderId(orderId).orElseThrow(() ->
+                new IllegalStateException(String.format("OrderId %s was not found", orderId)));
         orderSummaryView.getOrderByOrderId(orderId).setState(state);
         orderSummaryViewRepository.save(orderSummaryView);
         log.info("Start update order state for oderId: {} - state: {}", orderId, state);
     }
 
     public void paidOrder(String orderId) {
-        updateOrderState(orderId, Optional.empty(), PAID);
+        updateOrderState(orderId, PAID);
     }
 
     public void deliveryOrder(String orderId) {
-        updateOrderState(orderId, Optional.empty(), DELIVERED);
+        updateOrderState(orderId, DELIVERED);
     }
 
     public void completeOrder(String orderId) {
-        updateOrderState(orderId, Optional.empty(), COMPLETED);
+        updateOrderState(orderId, COMPLETED);
     }
 
-    public void cancelOrder(String orderId, String customerId) {
-        updateOrderState(orderId, Optional.of(customerId), CANCELLED);
+    public void cancelOrder(String orderId) {
+        updateOrderState(orderId, CANCELLED);
     }
 
-    public void refundOrder(String orderId, String customerId) {
-        updateOrderState(orderId, Optional.of(customerId), REFUNDED);
+    public void refundOrder(String orderId) {
+        updateOrderState(orderId, REFUNDED);
     }
 
 
