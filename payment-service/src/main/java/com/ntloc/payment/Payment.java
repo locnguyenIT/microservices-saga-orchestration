@@ -6,8 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static com.ntloc.payment.PaymentState.FAILED;
-import static com.ntloc.payment.PaymentState.SUCCEEDED;
+import static com.ntloc.payment.PaymentState.*;
 
 @Getter
 @Setter
@@ -50,6 +49,10 @@ public class Payment {
     public void failed(Reason reason) {
         this.state = FAILED;
         this.reason = reason;
+    }
+
+    public void cancel() {
+        this.state = CANCELED;
     }
 
 }

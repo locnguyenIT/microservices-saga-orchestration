@@ -49,14 +49,14 @@ public class OrderService {
     public CompletableFuture<String> cancelOrder(String id) {
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
-        CancelOrderCommand cancelOrderCommand = new CancelOrderCommand(id, order.getCustomerId());
+        CancelOrderCommand cancelOrderCommand = new CancelOrderCommand(order.getId());
         return commandGateway.send(cancelOrderCommand);
     }
 
     public CompletableFuture<String> refundOrder(String id) {
         Order order = orderRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
-        RefundOrderCommand cancelOrderCommand = new RefundOrderCommand(id, order.getCustomerId());
+        RefundOrderCommand cancelOrderCommand = new RefundOrderCommand(order.getId());
         return commandGateway.send(cancelOrderCommand);
     }
 }

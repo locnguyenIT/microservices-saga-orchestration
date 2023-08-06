@@ -1,17 +1,18 @@
 package com.ntloc.order.handler;
 
 import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
-import com.ntloc.coreapi.order.event.OrderCancelledEvent;
-import com.ntloc.coreapi.order.event.OrderCompletedEvent;
-import com.ntloc.coreapi.order.event.OrderCreatedEvent;
-import com.ntloc.coreapi.order.event.OrderRefundedEvent;
+import com.ntloc.coreapi.order.command.DeliveredOrderUpdateCommand;
+import com.ntloc.coreapi.order.command.PaidOrderUpdateCommand;
+import com.ntloc.coreapi.order.event.*;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import com.ntloc.order.Order;
 import com.ntloc.order.OrderLineItem;
 import com.ntloc.order.OrderRepository;
 import com.ntloc.order.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventsourcing.eventstore.DomainEventStream;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -25,13 +26,15 @@ import static com.ntloc.order.OrderConstant.MessagesConstant.ORDER_WAS_NOT_FOUND
 public class OrderEventHandler {
 
     private final OrderRepository orderRepository;
-
-    public OrderEventHandler(OrderRepository orderRepository) {
+    private final CommandGateway commandGateway;
+    public OrderEventHandler(OrderRepository orderRepository, CommandGateway commandGateway, DomainEventStream domainEventStream) {
         this.orderRepository = orderRepository;
+        this.commandGateway = commandGateway;
     }
 
     @EventHandler
     public void on(OrderCreatedEvent event) {
+        log.info("Event handle OrderCreatedEvent {}", event);
         List<OrderLineItem> lineItems = new ArrayList<>();
         BeanUtils.copyProperties(event.orderDetails().lineItems(),
                 lineItems);
@@ -45,6 +48,7 @@ public class OrderEventHandler {
         Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.paid();
+        commandGateway.send(new PaidOrderUpdateCommand(order.getId()));
         orderRepository.save(order);
     }
 
@@ -54,6 +58,7 @@ public class OrderEventHandler {
         Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.delivered();
+        commandGateway.send(new DeliveredOrderUpdateCommand(order.getId()));
         orderRepository.save(order);
     }
 

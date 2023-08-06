@@ -4,6 +4,6 @@ import lombok.Builder;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Builder
-public record CompleteOrderCommand(@TargetAggregateIdentifier String orderId, String customerId) {
+public record CompleteOrderCommand(@TargetAggregateIdentifier String orderId) {
 
 }

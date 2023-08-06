@@ -1,6 +1,8 @@
 package com.ntloc.payment.aggregate;
 
+import com.ntloc.coreapi.payment.command.CancelPaymentCommand;
 import com.ntloc.coreapi.payment.command.PaymentOrderCommand;
+import com.ntloc.coreapi.payment.event.PaymentCanceledEvent;
 import com.ntloc.coreapi.payment.event.PaymentFailedEvent;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import com.ntloc.payment.PaymentState;
@@ -12,8 +14,7 @@ import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 
-import static com.ntloc.payment.PaymentState.FAILED;
-import static com.ntloc.payment.PaymentState.SUCCEEDED;
+import static com.ntloc.payment.PaymentState.*;
 
 @Aggregate
 @ToString
@@ -33,7 +34,14 @@ public class PaymentAggregate {
         log.info("Receive ProcessPaymentCommand for orderId : {}", command.orderId());
         //TODO: validate the ProcessPaymentCommand
 
-        AggregateLifecycle.apply(new PaymentSucceededEvent(command.paymentId(), command.orderId()));
+        AggregateLifecycle.apply(new PaymentSucceededEvent(command.paymentId(),command.orderId()));
+    }
+
+    @CommandHandler
+    public void handle(CancelPaymentCommand command) {
+        log.info("Receive CancelPaymentCommand for orderId : {}", command.orderId());
+        //TODO: validate the ProcessPaymentCommand
+        AggregateLifecycle.apply(new PaymentCanceledEvent(command.paymentId(),command.orderId()));
     }
 
     @EventSourcingHandler
@@ -47,10 +55,19 @@ public class PaymentAggregate {
 
     @EventSourcingHandler
     public void on(PaymentFailedEvent event) {
-        log.info("Receive PaymentFailedEvent of orderId: {} ", event.paymentId());
+        log.info("Receive PaymentFailedEvent of orderId: {} ", event.orderId());
         this.paymentId = event.paymentId();
         this.orderId = event.orderId();
         this.state = FAILED;
         log.info("Updated PaymentAggregate after PaymentFailedEvent: " + this);
+    }
+
+    @EventSourcingHandler
+    public void on(PaymentCanceledEvent event) {
+        log.info("Receive PaymentCanceledEvent of orderId: {} ", event.orderId());
+        this.paymentId = event.paymentId();
+        this.orderId = event.orderId();
+        this.state = CANCELED;
+        log.info("Updated PaymentCanceledEvent after PaymentCanceledEvent: " + this);
     }
 }
