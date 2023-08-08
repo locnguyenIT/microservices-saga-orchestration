@@ -4,7 +4,6 @@ import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
 import com.ntloc.coreapi.order.command.DeliveredOrderUpdateCommand;
 import com.ntloc.coreapi.order.command.PaidOrderUpdateCommand;
 import com.ntloc.coreapi.order.event.*;
-import com.ntloc.coreapi.payment.event.PaymentFailedEvent;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import com.ntloc.order.Order;
 import com.ntloc.order.OrderLineItem;
@@ -27,6 +26,7 @@ public class OrderEventHandler {
 
     private final OrderRepository orderRepository;
     private final CommandGateway commandGateway;
+
     public OrderEventHandler(OrderRepository orderRepository, CommandGateway commandGateway) {
         this.orderRepository = orderRepository;
         this.commandGateway = commandGateway;
@@ -77,6 +77,15 @@ public class OrderEventHandler {
         Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
                 new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
         order.cancel();
+        orderRepository.save(order);
+    }
+
+    @EventHandler
+    public void on(OrderFailedEvent event) {
+        log.info("Event handle OrderFailedEvent {}", event);
+        Order order = orderRepository.findById(event.orderId()).orElseThrow(() ->
+                new ResourceNotFoundException(ORDER_WAS_NOT_FOUND));
+        order.failed(event.failedReason());
         orderRepository.save(order);
     }
 

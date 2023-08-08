@@ -3,14 +3,13 @@ package com.ntloc.order.saga;
 import com.ntloc.coreapi.customer.query.FetchCustomerMoneyQuery;
 import com.ntloc.coreapi.delivery.command.DeliveryOrderCommand;
 import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
-import com.ntloc.coreapi.order.command.CancelOrderCommand;
+import com.ntloc.coreapi.messages.FailedReason;
 import com.ntloc.coreapi.order.command.CompleteOrderCommand;
+import com.ntloc.coreapi.order.command.OrderFailedCommand;
 import com.ntloc.coreapi.order.event.OrderCancelledEvent;
 import com.ntloc.coreapi.order.event.OrderCompletedEvent;
 import com.ntloc.coreapi.order.event.OrderCreatedEvent;
-import com.ntloc.coreapi.payment.command.CancelPaymentCommand;
 import com.ntloc.coreapi.payment.command.PaymentOrderCommand;
-import com.ntloc.coreapi.payment.event.PaymentCanceledEvent;
 import com.ntloc.coreapi.payment.event.PaymentFailedEvent;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -44,17 +43,13 @@ public class CreateOrderSaga {
 
         CompletableFuture<Long> customerMoney = queryGateway.query(fetchCustomerMoneyQuery, ResponseTypes.instanceOf(Long.class));
 
-        PaymentOrderCommand paymentOrderCommand = new PaymentOrderCommand(UUID.randomUUID().toString(), event.orderId(),event.orderDetails().totalMoney(), customerMoney.join());
+        PaymentOrderCommand paymentOrderCommand = new PaymentOrderCommand(UUID.randomUUID().toString(), event.orderId(), event.orderDetails().totalMoney(), customerMoney.join());
         commandGateway.send(paymentOrderCommand)
                 .exceptionally(ex -> {
-                    cancelOrder(event.orderId());
+                    //TODO: Handle exception occur payment-service
+                    failedOrder(event.orderId(), FailedReason.SERVICE_EXCEPTION_OCCUR);
                     return ex;
                 });
-    }
-
-    private void cancelOrder(String orderId) {
-        CancelOrderCommand cancelOrderCommand = new CancelOrderCommand(orderId);
-        commandGateway.send(cancelOrderCommand);
     }
 
     @SagaEventHandler(associationProperty = "orderId")
@@ -67,8 +62,8 @@ public class CreateOrderSaga {
                 .orderId(event.orderId()).build();
         commandGateway.send(deliveryOrderCommand)
                 .exceptionally(ex -> {
-                    CancelPaymentCommand cancelPaymentCommand = new CancelPaymentCommand(event.paymentId(),event.orderId());
-                    commandGateway.send(cancelPaymentCommand);
+                    //TODO: Handle exception occur delivery-service
+                    failedOrder(event.orderId(), FailedReason.SERVICE_EXCEPTION_OCCUR);
                     return ex;
                 });
     }
@@ -77,7 +72,7 @@ public class CreateOrderSaga {
     public void on(PaymentFailedEvent event) {
         log.info("PaymentFailedEvent in Saga for Order Id : {}",
                 event.orderId());
-        cancelOrder(event.orderId());
+        failedOrder(event.orderId(), event.failedReason());
     }
 
 
@@ -106,12 +101,9 @@ public class CreateOrderSaga {
         //TODO: Send notification to notification service
     }
 
-
-    @SagaEventHandler(associationProperty = "orderId")
-    public void on(PaymentCanceledEvent event) {
-        log.info("PaymentCanceledEvent in Saga for Order Id : {}",
-                event.orderId());
-        cancelOrder(event.orderId());
+    private void failedOrder(String orderId, FailedReason failedReason) {
+        OrderFailedCommand orderFailedCommand = new OrderFailedCommand(orderId, failedReason);
+        commandGateway.send(orderFailedCommand);
     }
 
 }

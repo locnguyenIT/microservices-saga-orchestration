@@ -1,6 +1,6 @@
 package com.ntloc.payment;
 
-import com.ntloc.coreapi.messages.Reason;
+import com.ntloc.coreapi.messages.FailedReason;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,7 +24,7 @@ public class Payment {
     @Enumerated(value = EnumType.STRING)
     private PaymentState state;
     @Enumerated(value = EnumType.STRING)
-    private Reason reason;
+    private FailedReason failedReason;
     private LocalDateTime createAt;
 
     public Payment(String id, String orderId) {
@@ -34,11 +34,11 @@ public class Payment {
         this.createAt = LocalDateTime.now();
     }
 
-    public Payment(String id, String orderId, Reason reason) {
+    public Payment(String id, String orderId, FailedReason failedReason) {
         this.id = id;
         this.orderId = orderId;
         this.state = FAILED;
-        this.reason = reason;
+        this.failedReason = failedReason;
         this.createAt = LocalDateTime.now();
     }
 
@@ -46,9 +46,9 @@ public class Payment {
         this.state = SUCCEEDED;
     }
 
-    public void failed(Reason reason) {
+    public void failed(FailedReason failedReason) {
         this.state = FAILED;
-        this.reason = reason;
+        this.failedReason = failedReason;
     }
 
     public void cancel() {

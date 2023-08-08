@@ -1,11 +1,10 @@
 package com.ntloc.order;
 
+import com.ntloc.coreapi.messages.FailedReason;
 import com.ntloc.coreapi.messages.OrderState;
-import com.ntloc.coreapi.messages.Reason;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.ntloc.coreapi.messages.OrderState.*;
@@ -31,7 +30,7 @@ public class Order {
     @Enumerated(value = EnumType.STRING)
     private OrderState state;
     @Enumerated(value = EnumType.STRING)
-    private Reason reason;
+    private FailedReason failedReason;
 
     public Order(String id, String customerId, List<OrderLineItem> lineItems, Long moneyTotal) {
         this.id = id;
@@ -69,6 +68,11 @@ public class Order {
 
     public void refund() {
         this.state = REFUNDED;
+    }
+
+    public void failed(FailedReason failedReason) {
+        this.state = FAILED;
+        this.failedReason = failedReason;
     }
 
 }

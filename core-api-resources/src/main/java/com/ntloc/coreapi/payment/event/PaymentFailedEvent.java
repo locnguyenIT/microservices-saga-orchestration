@@ -1,8 +1,8 @@
 package com.ntloc.coreapi.payment.event;
 
-import com.ntloc.coreapi.messages.Reason;
+import com.ntloc.coreapi.messages.FailedReason;
 
 public record PaymentFailedEvent(String paymentId,
                                  String orderId,
-                                 Reason reason) {
+                                 FailedReason failedReason) {
 }

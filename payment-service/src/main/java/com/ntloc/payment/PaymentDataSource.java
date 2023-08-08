@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 import java.util.UUID;
 
-import static com.ntloc.coreapi.messages.Reason.INSUFFICIENT_CREDIT;
+import static com.ntloc.coreapi.messages.FailedReason.INSUFFICIENT_CREDIT;
 
 
 @Configuration
