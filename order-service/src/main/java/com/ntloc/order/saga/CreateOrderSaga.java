@@ -6,9 +6,9 @@ import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
 import com.ntloc.coreapi.messages.FailedReason;
 import com.ntloc.coreapi.order.command.CompleteOrderCommand;
 import com.ntloc.coreapi.order.command.OrderFailedCommand;
-import com.ntloc.coreapi.order.event.OrderCancelledEvent;
 import com.ntloc.coreapi.order.event.OrderCompletedEvent;
 import com.ntloc.coreapi.order.event.OrderCreatedEvent;
+import com.ntloc.coreapi.order.event.OrderFailedEvent;
 import com.ntloc.coreapi.payment.command.PaymentOrderCommand;
 import com.ntloc.coreapi.payment.event.PaymentFailedEvent;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
@@ -95,8 +95,8 @@ public class CreateOrderSaga {
 
     @EndSaga
     @SagaEventHandler(associationProperty = "orderId")
-    public void on(OrderCancelledEvent event) {
-        log.info("OrderCancelledEvent in Saga for Order Id : {}",
+    public void on(OrderFailedEvent event) {
+        log.info("OrderFailedEvent in Saga for Order Id : {}",
                 event.orderId());
         //TODO: Send notification to notification service
     }
