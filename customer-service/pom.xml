@@ -38,11 +38,6 @@
             <version>${axon-version}</version>
         </dependency>
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${map.struct.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.ntloc</groupId>
             <artifactId>core-api-resources</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -55,10 +50,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

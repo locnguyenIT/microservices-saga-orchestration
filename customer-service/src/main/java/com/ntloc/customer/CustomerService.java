@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static com.ntloc.customer.CustomerConstant.MessagesConstant.CUSTOMER_WAS_NOT_FOUND;
 
@@ -22,16 +23,16 @@ import static com.ntloc.customer.CustomerConstant.MessagesConstant.CUSTOMER_WAS_
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final CustomerMapper customerMapper;
+    private final CustomerDTOMapper customerDTOMapper;
     private final CommandGateway commandGateway;
 
     public List<CustomerDTO> getAllCustomer() {
-        return customerMapper.toListCustomerDTO(customerRepository.findAll());
+        return customerRepository.findAll().stream().map(customerDTOMapper).collect(Collectors.toList());
 
     }
 
     public CustomerDTO getCustomer(String id) {
-        return customerRepository.findById(id).map(customerMapper::toCustomerDTO).orElseThrow(() ->
+        return customerRepository.findById(id).map(customerDTOMapper).orElseThrow(() ->
                 new ResourceNotFoundException(CUSTOMER_WAS_NOT_FOUND));
     }
 
