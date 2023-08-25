@@ -2,10 +2,7 @@ package com.ntloc.orderhistory.axon;
 
 import com.ntloc.coreapi.customer.event.CustomerCreatedEvent;
 import com.ntloc.coreapi.delivery.event.OrderDeliveredEvent;
-import com.ntloc.coreapi.order.event.OrderCancelledEvent;
-import com.ntloc.coreapi.order.event.OrderCompletedEvent;
-import com.ntloc.coreapi.order.event.OrderCreatedEvent;
-import com.ntloc.coreapi.order.event.OrderRefundedEvent;
+import com.ntloc.coreapi.order.event.*;
 import com.ntloc.coreapi.payment.event.PaymentSucceededEvent;
 import com.ntloc.orderhistory.OrderHistoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +55,12 @@ public class OrderHistoryProjection {
     public void on(OrderRefundedEvent event) {
         log.info("OrderHistory pull OrderRefundedEvent: {}", event);
         orderHistoryService.refundOrder(event.orderId());
+    }
+
+    @EventHandler
+    public void on(OrderFailedEvent event) {
+        log.info("OrderHistory pull OrderFailedEvent: {}", event);
+        orderHistoryService.orderFailed(event.orderId());
     }
 
     @EventHandler

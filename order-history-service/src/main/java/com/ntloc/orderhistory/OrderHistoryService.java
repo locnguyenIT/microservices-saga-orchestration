@@ -75,6 +75,9 @@ public class OrderHistoryService {
     public void refundOrder(String orderId) {
         updateOrderState(orderId, REFUNDED);
     }
+    public void orderFailed(String orderId) {
+        updateOrderState(orderId, FAILED);
+    }
 
 
 }
